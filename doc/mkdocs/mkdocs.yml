@@ -221,6 +221,7 @@ pages:
         - 'Send DTMF': 'applications/callflow/doc/send_dtmf.md'
         - 'Flush DTMF': 'applications/callflow/doc/flush_dtmf.md'
     - 'Intercom': 'applications/callflow/doc/intercom.md'
+    - 'Set Custom Channel Variables': 'applications/callflow/doc/set_variables.md'
     - 'Set Call Variable': 'applications/callflow/doc/set_variable.md'
     - 'Intercept':
         - 'Action': 'applications/callflow/doc/intercept.md'
