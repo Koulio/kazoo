@@ -447,11 +447,11 @@ handle_cast({'continue', Key}, #state{flow=Flow
             {'noreply', launch_cf_module(State#state{flow=NewFlow})}
     end;
 handle_cast('stop', #state{flows=[]}=State) ->
-    {'stop', 'normal', State#state{destroyed='true'}};
+    {'stop', 'normal', State};
 handle_cast('stop', #state{flows=[Flow|Flows]}=State) ->
     {'noreply', launch_cf_module(State#state{flow=Flow, flows=Flows})};
 handle_cast('hard_stop', State) ->
-    {'stop', 'normal', State#state{destroyed='true'}};
+    {'stop', 'normal', State};
 handle_cast('transfer', State) ->
     {'stop', {'shutdown', 'transfer'}, State};
 handle_cast('control_usurped', State) ->
@@ -656,7 +656,7 @@ terminate(_Reason, #state{cf_module_pid='undefined'
 terminate(_Reason, #state{call=Call
                          ,cf_module_pid='undefined'
                          }) ->
-    hangup_call(kapps_call:clear_control_queue_helper(Call)),
+    hangup_call(Call),
     lager:info("callflow execution has been stopped: ~p", [_Reason]);
 terminate(_Reason, #state{cf_module_pid={Pid, _}
                          ,destroyed='true'
@@ -891,4 +891,4 @@ get_pid(_) -> 'undefined'.
 
 -spec hangup_call(kapps_call:call()) -> 'ok'.
 hangup_call(Call) ->
-    kapps_call_command:hangup(Call).
+    kapps_call_command:hangup(kapps_call:clear_helpers(Call)).
